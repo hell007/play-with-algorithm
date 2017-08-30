@@ -41,8 +41,8 @@ console.log(selectionSort(arr));
 
 //冒泡
 function test(arr){
-    for(var i=0,len=arr.length;i<len;i++){
-        for(var j=i+1;j<len;j++){
+    for(let i=0,len=arr.length;i<len;i++){
+        for(let j=i+1;j<len;j++){
             if(arr[i]>arr[j]){
                 var temp = arr[i];
                 arr[i] = arr[j]
