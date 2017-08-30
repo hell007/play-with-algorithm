@@ -3,6 +3,8 @@
     生成有n个元素的随机数组，每个元素的范围为[L,R]。
     注意是前闭后闭的区间范围  
 */
+//Math.random()
+//Math.floor()向下取整
 function randomArray(n, rangeL, rangeR){
     let arr = [];
     for(let i = 0; i < n; i++){
