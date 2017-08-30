@@ -38,6 +38,8 @@ function insertionSort1(arr){
 
 console.log(insertionSort1(arr))
 
+
+
 function test(arr){
     let  temp;
     for(let i=1,len=arr.length; i<len; i++){
@@ -55,7 +57,7 @@ function test(arr){
 console.log('====',test(arr))
 
 
-
+//arr[j]  > arr[j-1]  则看成插入排序已完成
 function insertionSort2(arr){
     let temp;
     for(let i = 1,len = arr.length; i < len; i++){
