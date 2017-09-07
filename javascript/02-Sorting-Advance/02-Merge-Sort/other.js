@@ -1,4 +1,5 @@
 // js的另一个版本
+var arr = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; 
 
 function mergeSort(arr){
     if(arr.length <= 1){
@@ -21,7 +22,5 @@ function merge(left, right){
     }
     return result.concat(left).concat(right); //注意二: concat
 }
-
-var arr = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; 
 
 console.log(mergeSort(arr));
