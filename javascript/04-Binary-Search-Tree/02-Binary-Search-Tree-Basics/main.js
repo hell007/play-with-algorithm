@@ -43,220 +43,225 @@
                     红黑树无需知道怎么实现，但要知道其实现原理以及解决了什么问题？            
 */
 
+!function(){
 
-function Node(key, left, right){
-    this.key = key;
-    this.left = left;
-    this.right = right;
-}
+    function Node(key, left, right){
+        this.key = key;
+        this.left = left;
+        this.right = right;
+    }
 
-//返回结点的键值
-Node.prototype.show = function(){
-    return this.key;
-};
+    //返回结点的键值
+    Node.prototype.show = function(){
+        return this.key;
+    };
 
-function BST(){
-    this.root = null; //BST的根节点
-    this.count = 0;
-}
+    function BST(){
+        this.root = null; //BST的根节点
+        this.count = 0;
+        return this;
+    }
 
-BST.prototype.size = function(){
-    return this.count;
-};
+    BST.prototype.size = function(){
+        return this.count;
+    };
 
-BST.prototype.isEmpty = function(){
-    return this.count === 0;
-};
+    BST.prototype.isEmpty = function(){
+        return this.count === 0;
+    };
 
-BST.prototype.insert = function(key){
-    var newNode = new Node(key, null, null);   //创建一个空结点
-    if(!this.root){                  //不存在根节点，说明是一颗新树
-        this.root = newNode;
-        this.count++;
-    }else{
-        var current = this.root,
-            parent;
+    BST.prototype.insert = function(key){
+        var newNode = new Node(key, null, null);   //创建一个空结点
+        if(!this.root){                  //不存在根节点，说明是一颗新树
+            this.root = newNode;
+            this.count++;
+        }else{
+            var current = this.root,
+                parent;
+            while(true){
+                parent = current;        //保留current的一份副本
+                if(key < current.key){
+                    current = current.left;            //当前节点 更改为 左子节点
+                    if(current === null){
+                        parent.left = newNode;
+                        this.count++;
+                        break;
+                    }
+                }else if(key > current.key){
+                    current = current.right;
+                    if(current === null){
+                        parent.right = newNode;
+                        this.count++;
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+    BST.prototype.contain = function(key){
+        var current = this.root;
         while(true){
-            parent = current;        //保留current的一份副本
             if(key < current.key){
-                current = current.left;            //当前节点 更改为 左子节点
+                current = current.left;
                 if(current === null){
-                    parent.left = newNode;
-                    this.count++;
                     break;
                 }
             }else if(key > current.key){
                 current = current.right;
                 if(current === null){
-                    parent.right = newNode;
-                    this.count++;
                     break;
                 }
+            }else{
+                return true;
             }
         }
-    }
-};
+        return false;
+    };
 
-BST.prototype.contain = function(key){
-    var current = this.root;
-    while(true){
-        if(key < current.key){
-            current = current.left;
-            if(current === null){
-                break;
-            }
-        }else if(key > current.key){
-            current = current.right;
-            if(current === null){
-                break;
-            }
-        }else{
-            return true;
-        }
-    }
-    return false;
-};
-
-//查找给定值
-BST.prototype.search = function(key){
-    var current = this.root;
-    while(true){
-        if(key < current.key){
-            current = current.left;
-            if(current === null){
-                break;
-            }
-        }else if(key > current.key){
-            current = current.right;
-            if(current === null){
-                break;
-            }
-        }else{
-            return current;
-        }
-    }
-    return null;
-};
-//前序遍历
-BST.prototype.preOrder = function(){
-    (function(node){
-        if(node !== null){
-            console.log(node.show());
-            arguments.callee(node.left);
-            arguments.callee(node.right);
-        }
-    })(this.root);
-};
-//中序遍历
-BST.prototype.inOrder = function(){
-    (function(node){
-        if(node !== null){
-            arguments.callee(node.left);
-            console.log(node.show());
-            arguments.callee(node.right);
-        }
-    })(this.root);
-};
-//后序遍历
-BST.prototype.postOrder = function(){
-    (function(node){
-        if(node !== null){
-            arguments.callee(node.left);
-            arguments.callee(node.right);
-            console.log(node.show());
-        }
-    })(this.root);
-};
-//层序遍历(需要利用队列)--广度优先搜索
-BST.prototype.levelOrder = function(){
-    var q = [];
-    q.push(this.root)
-    while(q.length !== 0){
-        var res = q.shift();
-
-        console.log(res.show());
-        
-        if(res.left !== null){
-            q.push(res.left);
-        }
-        if(res.right !== null){
-            q.push(res.right);
-        }
-    }
-};
-//查找最小值
-BST.prototype.getMin = function(){
-    if(this.root){
+    //查找给定值
+    BST.prototype.search = function(key){
         var current = this.root;
-        while(current.left){     //从this.root根节点不断地left,left,left...下去
-            current = current.left;
+        while(true){
+            if(key < current.key){
+                current = current.left;
+                if(current === null){
+                    break;
+                }
+            }else if(key > current.key){
+                current = current.right;
+                if(current === null){
+                    break;
+                }
+            }else{
+                return current;
+            }
         }
-        return current.key;
-    }else{
         return null;
-    }
-};
+    };
+    //前序遍历
+    BST.prototype.preOrder = function(){
+        (function(node){
+            if(node !== null){
+                console.log(node.show());
+                arguments.callee(node.left);
+                arguments.callee(node.right);
+            }
+        })(this.root);
+    };
+    //中序遍历
+    BST.prototype.inOrder = function(){
+        (function(node){
+            if(node !== null){
+                arguments.callee(node.left);
+                console.log(node.show());
+                arguments.callee(node.right);
+            }
+        })(this.root);
+    };
+    //后序遍历
+    BST.prototype.postOrder = function(){
+        (function(node){
+            if(node !== null){
+                arguments.callee(node.left);
+                arguments.callee(node.right);
+                console.log(node.show());
+            }
+        })(this.root);
+    };
+    //层序遍历(需要利用队列)--广度优先搜索
+    BST.prototype.levelOrder = function(){
+        var q = [];
+        q.push(this.root)
+        while(q.length !== 0){
+            var res = q.shift();
 
-BST.prototype.getMax = function(){
-    if(this.root){
-        var current = this.root;
-        while(current.right){
-            current = current.right;
+            console.log(res.show());
+            
+            if(res.left !== null){
+                q.push(res.left);
+            }
+            if(res.right !== null){
+                q.push(res.right);
+            }
         }
-        return current.key;
-    }else{
-        return null;
-    }
-};
-//删除节点
-BST.prototype.remove = function(key){
-    this.root = this.removeNode(this.root, key);
-};
-// 删除掉以node为根的二分搜索树中键值为key的节点, 递归算法
-// 返回删除节点后新的二分搜索树的根
-BST.prototype.removeNode = function(node, key){
-    if(node === null){
-        return null;
-    }
-    if(key < node.key){
-        node.left = this.removeNode(node.left, key);
-        return node;
-    }else if(key > node.key){
-        node.right = this.removeNode(node.right, key);
-        return node;
-    }else{
-        //没有左右子节点
-        if(node.left === null && node.right === null){
-            this.count--;
+    };
+    //查找最小值
+    BST.prototype.getMin = function(){
+        if(this.root){
+            var current = this.root;
+            while(current.left){     //从this.root根节点不断地left,left,left...下去
+                current = current.left;
+            }
+            return current.key;
+        }else{
             return null;
         }
-        //没有左子节点
-        if(node.left === null){
-            this.count--;
-            return node.right;
-        }
-        //没有右子节点
-        if(node.right === null){
-            return node.left;
-        }
-        //有两个子节点的节点
-        //找到待删除节点右子树中的最小节点，将它的key值复制给待删除节点，再删除该最小节点
-        var minNode = this.__getSmallest(node.right);
-        node.key = minNode.key;
-        node.right = this.removeNode(node.right, minNode.key);
-        //this.count--;
-        return node;
-    }
-};
+    };
 
-//查找以node为根节点的二叉树的最小值
-BST.prototype.__getSmallest = function(node){
-    var current = node;
-    while(current.left){
-        current = currnet.left;
-    }
-    return current;
-};
+    BST.prototype.getMax = function(){
+        if(this.root){
+            var current = this.root;
+            while(current.right){
+                current = current.right;
+            }
+            return current.key;
+        }else{
+            return null;
+        }
+    };
+    //删除节点
+    BST.prototype.remove = function(key){
+        this.root = this.removeNode(this.root, key);
+    };
+    // 删除掉以node为根的二分搜索树中键值为key的节点, 递归算法
+    // 返回删除节点后新的二分搜索树的根
+    BST.prototype.removeNode = function(node, key){
+        if(node === null){
+            return null;
+        }
+        if(key < node.key){
+            node.left = this.removeNode(node.left, key);
+            return node;
+        }else if(key > node.key){
+            node.right = this.removeNode(node.right, key);
+            return node;
+        }else{
+            //没有左右子节点
+            if(node.left === null && node.right === null){
+                this.count--;
+                return null;
+            }
+            //没有左子节点
+            if(node.left === null){
+                this.count--;
+                return node.right;
+            }
+            //没有右子节点
+            if(node.right === null){
+                return node.left;
+            }
+            //有两个子节点的节点
+            //找到待删除节点右子树中的最小节点，将它的key值复制给待删除节点，再删除该最小节点
+            var minNode = this.__getSmallest(node.right);
+            node.key = minNode.key;
+            node.right = this.removeNode(node.right, minNode.key);
+            //this.count--;
+            return node;
+        }
+    };
+
+    //查找以node为根节点的二叉树的最小值
+    BST.prototype.__getSmallest = function(node){
+        var current = node;
+        while(current.left){
+            current = currnet.left;
+        }
+        return current;
+    };
+
+    window.BST = BST;
+}();
 
 var bst = new BST();
 var arr = [9, 7, 10, 11, 8, 4, 3, 1, 2];
