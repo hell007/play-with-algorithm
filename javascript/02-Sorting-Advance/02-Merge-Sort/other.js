@@ -1,4 +1,8 @@
 // js的另一个版本
+//array
+//slice() 从数组中返回元素，形成新数组
+//shift() 从数组中删除元素
+
 var arr = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; 
 
 function mergeSort(arr){
